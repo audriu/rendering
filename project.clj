@@ -4,5 +4,6 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/core.cache "0.7.2"]
-                 [org.clojure/clojure "1.9.0"]
-                 [quil "2.8.0"]])
+                 [org.clojure/clojure "1.10.1"]
+                 [quil "2.8.0"]
+                 [uncomplicate/neanderthal "0.26.1"]])
