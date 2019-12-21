@@ -3,43 +3,50 @@
             [quil.middleware :as m]))
 
 (def global-width 600)
-(def global-heigth 600)
+(def global-height 600)
+(def number-of-particles 100)
+(def particle-size 20)
 
-(def init-state
-  {:particles [
-               {:color 0  :x 300 :y 100  :xspeed 2 :yspeed 5}
-               {:color 50 :x 145  :y 50 }
-               {:color 200 :x 200 :y 300 }
-               ]})
+(defn particle []
+  {:x (q/random global-width)
+   :y (q/random global-height)
+   :vx (q/random -5 5)
+   :vy (q/random -5 5)
+   :color (q/random 255)})
 
 (defn setup []
-  (q/frame-rate 30)
+  (q/frame-rate 60)
   (q/color-mode :hsb)
-  init-state)
+  {:particles (take number-of-particles (repeatedly particle))})
+
+(defn move-particle [particle]
+  (let[new-x (+ (:x particle)(:vx particle))
+       new-y (+ (:y particle)(:vy particle))
+       x-changes (if (or (< new-x 0)(> new-x global-width))
+                   {:vx (- (:vx particle))}
+                   {:x (+ (:x particle)(:vx particle))})
+       y-changes (if (or (< new-y 0)(> new-y global-height))
+                   {:vy (- (:vy particle))}
+                   {:y (+ (:y particle)(:vy particle))})]
+    (merge particle x-changes y-changes)))
 
 (defn update-state [state]
-  state)
+  (assoc state :particles (map move-particle (:particles state))))
 
 (defn draw-state [state]
   (q/background 240)
   (doseq [p (:particles state)]
-    (println "ok")
     (q/fill (:color p) 255 255)
     (let [x (:x p)
           y (:y p)]
-      (q/ellipse x y 100 100))))
+      (q/ellipse x y particle-size particle-size))))
 
 
 (q/defsketch ok
   :title "Vectors"
-  :size [global-width global-heigth]
-                                        ; setup function called only once, during sketch initialization.
+  :size [global-width global-height]
   :setup setup
-                                        ; update-state is called on each iteration before draw-state.
   :update update-state
   :draw draw-state
   :features [:keep-on-top]
-                                        ; This sketch uses functional-mode middleware.
-                                        ; Check quil wiki for more info about middlewares and particularly
-                                        ; fun-mode.
   :middleware [m/fun-mode])
