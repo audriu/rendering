@@ -154,7 +154,7 @@
   transaction that has verified the ant has food"
   (let [p (place loc)
         ant (:ant @p)]
-    (alter p assoc
+    (alter p assoc 
            :food (inc (:food @p))
            :ant (dissoc ant :food))
     loc))
@@ -308,12 +308,10 @@
   nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; use ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (comment
-;demo
-;; (load-file "/Users/rich/dev/clojure/ants.clj")
-(def ants (setup))
-(send-off animator animation)
-(dorun (map #(send-off % behave) ants))
-(send-off evaporator evaporation)
-
-;; )
+(comment
+  ;;demo
+  ;; (load-file "/Users/rich/dev/clojure/ants.clj")
+  (def ants (setup))
+  (send-off animator animation)
+  (dorun (map #(send-off % behave) ants))
+  (send-off evaporator evaporation))
