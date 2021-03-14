@@ -32,8 +32,8 @@
         ;Distance between bodies
         distance (Math/sqrt (+ (Math/pow dx 2) (Math/pow dy 2)))]
     (if (= distance 0) (print "Hitt!")
-                       (directionOfForce dx dy
-                                         (force G (.-mass body) (.-mass otherBody) distance)))))
+        (directionOfForce dx dy
+                          (force G (.-mass body) (.-mass otherBody) distance)))))
 
 (defn totalAttraction [body bodies fxy]
   ;Creates a list of vectors, a vector for every body
@@ -47,19 +47,21 @@
                                                 (+ (.-vy b) (* (/ (first (rest f)) (.-mass b)) timestep))))
          positions (for [v vectors b bodies] (list (+ (.-px b) (* (first v) timestep))
                                                    (+ (.-py b) (* (first (rest v)) timestep))))]
-    (for [b bodies v vectors p positions]
-      (->body (.-id b) (first p) (first (rest p)) (first v) (first (rest v))
-            (.-mass b) (.-radius b) (.-color b)))))
+        (for [b bodies v vectors p positions]
+          (->body (.-id b) (first p) (first (rest p)) (first v) (first (rest v))
+                  (.-mass b) (.-radius b) (.-color b)))))
 
 
 ;A list of bodies, size of planets is not real... you woldent se the planets.
+
+
 (def testCollPlanets (list
                        ;(body "Havoc" (* -1.2 AU) 0 0 (* -10 1000) (* 8 (expt 10 25)) 50 "green")
-                       (->body "Sun" 0 0 0 0 (* 1.98892 (Math/pow 10 30)) 100 "yellow")
-                       (->body "Mercury" (* -0.387098 AU) 0 0 (* -47.362 1000) (* 3.3011 (Math/pow 10 23)) 4 "red")
-                       (->body "Venus" (* 0.723 AU) 0 0 (* 35.02 1000) (* 4.8685 (Math/pow 10 24)) 8 "brown")
-                       (->body "Earth" (* -1 AU) 0 0 (* -29.783 1000) (* 5.9742 (Math/pow 10 24)) 8 "green")
-                       (->body "Mars" (* -1.5236 AU) 0 0 (* -24.077 1000) (* 6.4174 (Math/pow 10 23)) 4 "orange")))
+                      (->body "Sun" 0 0 0 0 (* 1.98892 (Math/pow 10 30)) 100 "yellow")
+                      (->body "Mercury" (* -0.387098 AU) 0 0 (* -47.362 1000) (* 3.3011 (Math/pow 10 23)) 4 "red")
+                      (->body "Venus" (* 0.723 AU) 0 0 (* 35.02 1000) (* 4.8685 (Math/pow 10 24)) 8 "brown")
+                      (->body "Earth" (* -1 AU) 0 0 (* -29.783 1000) (* 5.9742 (Math/pow 10 24)) 8 "green")
+                      (->body "Mars" (* -1.5236 AU) 0 0 (* -24.077 1000) (* 6.4174 (Math/pow 10 23)) 4 "orange")))
 
 (defn printBodies [bodies scale]
   ;To print the numbers for control
@@ -81,6 +83,7 @@
 
 
 ;(loop- G testCollPlanets timestep SCALE 90)
+
 
 (defn setup []
   ; Set frame rate to 30 frames per second.
@@ -125,21 +128,21 @@
         (set! (.-vy b) (nth testCollPlanets i) (.-vy b))
         (q/fill (.-color b) 255 255)
         (q/ellipse
-          (+ (* (.-px b) SCALE) (- 500 (/ (.-radius b) 2)))
-          (+ (* (.-py b) SCALE) (- 500 (/ (.-radius b) 2)))
-          (.-radius b)
-          (.-radius b))))))
+         (+ (* (.-px b) SCALE) (- 500 (/ (.-radius b) 2)))
+         (+ (* (.-py b) SCALE) (- 500 (/ (.-radius b) 2)))
+         (.-radius b)
+         (.-radius b))))))
 
 (q/defsketch ok
-             :title "Solarsystem simulator"
-             :size [global-width global-heigth]
+  :title "Solarsystem simulator"
+  :size [global-width global-heigth]
              ; setup function called only once, during sketch initialization.
-             :setup setup
+  :setup setup
              ; update-state is called on each iteration before draw-state.
-             :update update-state
-             :draw draw-state
-             :features [:keep-on-top]
+  :update update-state
+  :draw draw-state
+  :features [:keep-on-top]
              ; This sketch uses functional-mode middleware.
              ; Check quil wiki for more info about middlewares and particularly
              ; fun-mode.
-             :middleware [m/fun-mode])
+  :middleware [m/fun-mode])

@@ -20,14 +20,14 @@
   {:particles (take number-of-particles (repeatedly particle))})
 
 (defn move-particle [particle]
-  (let[new-x (+ (:x particle)(:vx particle))
-       new-y (+ (:y particle)(:vy particle))
-       x-changes (if (or (< new-x 0)(> new-x global-width))
-                   {:vx (- (:vx particle))}
-                   {:x (+ (:x particle)(:vx particle))})
-       y-changes (if (or (< new-y 0)(> new-y global-height))
-                   {:vy (- (:vy particle))}
-                   {:y (+ (:y particle)(:vy particle))})]
+  (let [new-x (+ (:x particle) (:vx particle))
+        new-y (+ (:y particle) (:vy particle))
+        x-changes (if (or (< new-x 0) (> new-x global-width))
+                    {:vx (- (:vx particle))}
+                    {:x (+ (:x particle) (:vx particle))})
+        y-changes (if (or (< new-y 0) (> new-y global-height))
+                    {:vy (- (:vy particle))}
+                    {:y (+ (:y particle) (:vy particle))})]
     (merge particle x-changes y-changes)))
 
 (defn update-state [state]
@@ -40,7 +40,6 @@
     (let [x (:x p)
           y (:y p)]
       (q/ellipse x y particle-size particle-size))))
-
 
 (q/defsketch ok
   :title "Vectors"

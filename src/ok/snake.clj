@@ -16,25 +16,25 @@
    KeyEvent/VK_DOWN [0 1]})
 
 (defn create-snake []
-  {:body (list [3 0][2 0][1 0][0 0])
+  {:body (list [3 0] [2 0] [1 0] [0 0])
    :direction [1 0]
    :type :snake
    :color (Color. 15 160 70)})
 
 (defn create-apple []
-  {:location [(rand-int field-width)(rand-int field-height)]
+  {:location [(rand-int field-width) (rand-int field-height)]
    :color (Color. 210 50 90)
    :type :apple})
 
 (defn point-to-screen-rect [[pt-x pt-y]]
-  [(* pt-x point-size)(* pt-y point-size) point-size point-size])
+  [(* pt-x point-size) (* pt-y point-size) point-size point-size])
 
 (defn move [{:keys [body direction] :as snake} & grow]
   (assoc snake :body
          (cons
           (let [[head-x head-y] (first body)
                 [dir-x dir-y] direction]
-            [(+ head-x dir-x)(+ head-y dir-y)])
+            [(+ head-x dir-x) (+ head-y dir-y)])
           (if grow body (butlast body)))))
 
 (defn turn [snake direction]
@@ -57,7 +57,7 @@
   (or (head-overlaps-body? head body)
       (head-outside-bounds? head)))
 
-(defn eats? [{ [head] :body} {apple :location}]
+(defn eats? [{[head] :body} {apple :location}]
   (= head apple))
 
 ;;------------------
@@ -66,11 +66,11 @@
 
 (defn update-position [snake apple]
   (dosync
-     (if (eats? @snake @apple)
-       (do
-         (ref-set apple (create-apple))
-         (alter snake move :grow))
-       (alter snake move)))
+   (if (eats? @snake @apple)
+     (do
+       (ref-set apple (create-apple))
+       (alter snake move :grow))
+     (alter snake move)))
   nil)
 
 (defn update-direction [snake direction]
@@ -88,7 +88,7 @@
 ;;-----------------
 
 (defn fill-point [g pt color]
-  (let [[x y width height](point-to-screen-rect pt)]
+  (let [[x y width height] (point-to-screen-rect pt)]
     (.setColor g color)
     (.fillRect g x y width height)))
 
@@ -100,7 +100,6 @@
 (defmethod paint :snake [g {:keys [body color]}]
   (doseq [point body]
     (fill-point g point color)))
-
 
 (defn game-panel [frame snake apple]
   (proxy [JPanel ActionListener KeyListener] []
@@ -124,7 +123,7 @@
           (reset-game snake apple)
           (JOptionPane/showMessageDialog frame "you win!")))
       (.repaint this))
-    
+
     ;;KeyListener
     (keyPressed [e]
       (let [direction (directions (.getKeyCode e))]
